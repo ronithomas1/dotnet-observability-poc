@@ -63,6 +63,13 @@ public static class Extensions
                 ["host.name"] = Environment.MachineName,
             });
 
+        builder.Logging.AddOpenTelemetry(logging =>
+        {
+            logging.IncludeFormattedMessage = true;
+            logging.IncludeScopes = true;
+            logging.SetResourceBuilder(resource);
+        });
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resourceBuilder => resourceBuilder
                 .AddService(
@@ -73,12 +80,6 @@ public static class Extensions
                     ["deployment.environment"] = environment,
                     ["host.name"] = Environment.MachineName,
                 }))
-            .WithLogging(logging =>
-            {
-                logging.SetResourceBuilder(resource);
-                logging.IncludeFormattedMessage = true;
-                logging.IncludeScopes = true;
-            })
             .WithMetrics(metrics =>
             {
                 metrics.SetResourceBuilder(resource)

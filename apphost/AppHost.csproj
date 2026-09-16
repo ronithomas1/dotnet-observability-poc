@@ -9,4 +9,8 @@
     <UserSecretsId>fb3d8176-15bd-45dd-bac9-32cbf2c3579f</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\api\ObservabilityDemo.OrderService.csproj" />
+  </ItemGroup>
+
 </Project>
