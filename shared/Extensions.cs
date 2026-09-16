@@ -63,12 +63,6 @@ public static class Extensions
                 ["host.name"] = Environment.MachineName,
             });
 
-        builder.Logging.AddOpenTelemetry(logging =>
-        {
-            logging.IncludeFormattedMessage = true;
-            logging.IncludeScopes = true;
-        });
-
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resourceBuilder => resourceBuilder
                 .AddService(
@@ -79,15 +73,23 @@ public static class Extensions
                     ["deployment.environment"] = environment,
                     ["host.name"] = Environment.MachineName,
                 }))
+            .WithLogging(logging =>
+            {
+                logging.SetResourceBuilder(resource);
+                logging.IncludeFormattedMessage = true;
+                logging.IncludeScopes = true;
+            })
             .WithMetrics(metrics =>
             {
-                metrics.AddAspNetCoreInstrumentation()
+                metrics.SetResourceBuilder(resource)
+                    .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation();
             })
             .WithTracing(tracing =>
             {
-                tracing.AddSource(serviceName)
+                tracing.SetResourceBuilder(resource)
+                    .AddSource(serviceName)
                     .AddAspNetCoreInstrumentation(tracing =>
                         // Exclude health check requests from tracing
                         tracing.Filter = context =>
