@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../api"
+		},
+		{
+			"path": "../apphost"
+		},
+		{
+			"path": "../frontend"
+		},
+		{
+			"path": "../serverless"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
